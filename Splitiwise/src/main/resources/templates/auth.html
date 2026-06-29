@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SettleMate</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet">
+
+<style>
+
+:root{
+  --ink:#0F172A;
+  --muted:#64748B;
+  --line:#CBD5E1;
+  --panel:#FFFFFF;
+  --page:#ECF7F6;
+  --teal:#0D9488;
+  --teal-hover:#0F766E;
+  --red:#DC2626;
+  --shadow:0 8px 24px rgba(15,23,42,.08);
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+  linear-gradient(135deg, rgba(20,184,166,.16), transparent 38%),
+  linear-gradient(315deg, rgba(13,148,136,.12), transparent 42%),
+  var(--page);
+
+  font-family:Inter,sans-serif;
+  display:grid;
+  place-items:center;
+  padding:24px;
+}
+
+.auth-panel{
+  width:min(500px,100%);
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:10px;
+  box-shadow:var(--shadow);
+  padding:30px;
+  display:grid;
+  gap:22px;
+}
+
+.auth-brand{
+  display:grid;
+  gap:14px;
+  justify-items:center;
+  text-align:center;
+}
+
+.auth-logo{
+  width:120px;
+  object-fit:contain;
+}
+
+h1{
+  margin:0;
+  font-size:64px;
+  font-weight:800;
+  color:#0F172A;
+}
+
+.muted{
+  color:#64748B;
+  font-size:16px;
+}
+
+.auth-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:4px;
+  gap:4px;
+  background:#ECF7F6;
+}
+
+.auth-tab{
+  text-decoration:none;
+  border:0;
+  border-radius:6px;
+  min-height:46px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#64748B;
+  font-weight:700;
+}
+
+.auth-tab.active{
+  background:white;
+  color:#0F766E;
+  box-shadow:0 4px 12px rgba(15,23,42,.08);
+}
+
+.auth-form{
+  display:grid;
+  gap:18px;
+}
+
+label{
+  display:grid;
+  gap:8px;
+  font-weight:700;
+  color:#64748B;
+}
+
+input{
+  width:100%;
+  min-height:52px;
+  padding:12px;
+  border:1px solid #CBD5E1;
+  border-radius:10px;
+  outline:none;
+  font-size:16px;
+}
+
+input:focus{
+  border:2px solid #14B8A6;
+}
+
+.auth-message{
+  color:var(--red);
+  font-size:14px;
+  font-weight:700;
+}
+
+.btn{
+  border:none;
+  background:#0D9488;
+  color:white;
+  min-height:52px;
+  border-radius:10px;
+  font-size:22px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.btn:hover{
+  background:#0F766E;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="auth-panel">
+
+    <!-- Logo -->
+
+    <div class="auth-brand">
+
+        <img class="auth-logo"
+             th:src="@{/images/logo.png}"
+             alt="logo">
+
+        <div>
+            <h1>SettleMate</h1>
+
+            <p class="muted">
+                Create an account or log in to manage shared travel expenses.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- Tabs -->
+
+    <div class="auth-tabs">
+
+        <a th:href="@{/login}"
+           th:class="${mode == 'login'} ? 'auth-tab active' : 'auth-tab'">
+            Login
+        </a>
+
+        <a th:href="@{/register}"
+           th:class="${mode == 'register'} ? 'auth-tab active' : 'auth-tab'">
+            Sign Up
+        </a>
+
+    </div>
+
+
+    <!-- LOGIN FORM -->
+
+    <form class="auth-form"
+          th:if="${mode == 'login'}"
+          th:action="@{/login-user}"
+          method="post">
+
+        <label>
+            Email
+            <input type="email"
+                   name="email"
+                   placeholder="you@example.com"
+                   required>
+        </label>
+
+        <label>
+            Password
+            <input type="password"
+                   name="password"
+                   placeholder="Enter password"
+                   required>
+        </label>
+
+        <p class="auth-message"
+           th:if="${msg}"
+           th:text="${msg}">
+        </p>
+
+        <button class="btn" type="submit">
+            Login
+        </button>
+
+    </form>
+
+
+    <!-- REGISTER FORM -->
+
+    <form class="auth-form"
+          th:if="${mode == 'register'}"
+          th:action="@{/register-user}"
+          method="post">
+
+        <label>
+            Full name
+            <input type="text"
+                   name="name"
+                   placeholder="Your name"
+                   required>
+        </label>
+
+        <label>
+            Email
+            <input type="email"
+                   name="email"
+                   placeholder="you@example.com"
+                   required>
+        </label>
+
+        <label>
+            Password
+            <input type="password"
+                   name="password"
+                   placeholder="Minimum 6 characters"
+                   required>
+        </label>
+
+        <p class="auth-message"
+           th:if="${msg}"
+           th:text="${msg}">
+        </p>
+
+        <button class="btn" type="submit">
+            Create Account
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
