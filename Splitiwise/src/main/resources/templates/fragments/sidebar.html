@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="sidebar">
+
+    <div class="sidebar">
+
+        <!-- LOGO -->
+
+        <div class="logo-container">
+
+            <img th:src="@{/images/logo.png}"
+                 alt="logo"
+                 class="logo">
+
+        </div>
+
+
+        <!-- CREATE GROUP -->
+
+        <button
+                class="create-group-btn"
+                onclick="openModal()">
+
+            <span class="plus">+</span>
+
+            Create Group
+
+        </button>
+
+
+        <!-- GROUP TITLE -->
+
+        <div class="group-label">
+            Groups
+        </div>
+
+
+        <!-- IF NO GROUPS -->
+
+        <div th:if="${groups == null or #lists.isEmpty(groups)}">
+
+            <div class="group-card">
+
+                <div class="group-left">
+
+                    <span class="folder-icon">
+                        📁
+                    </span>
+
+                    <span class="group-name">
+                        No Groups
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- GROUP LIST -->
+
+        <div th:if="${groups != null}">
+
+            <div th:each="group : ${groups}">
+
+                <!-- GROUP CARD -->
+
+                <a th:href="@{/group(id=${group.id})}"
+                   style="text-decoration:none;color:inherit;">
+
+                    <div class="group-card">
+
+                        <div class="group-left">
+
+                            <span class="folder-icon">
+                                📁
+                            </span>
+
+                            <span class="group-name"
+                                  th:text="${group.groupName}">
+                                Goa Weekend
+                            </span>
+
+                        </div>
+
+                        <div class="arrow">
+
+                            <span th:if="${groupSelected != null and groupSelected.id == group.id}">
+                                ˅
+                            </span>
+
+                            <span th:unless="${groupSelected != null and groupSelected.id == group.id}">
+                                ˃
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+                <!-- SUB MENU -->
+
+                <div class="group-submenu"
+                     th:if="${groupSelected != null and groupSelected.id == group.id}">
+
+                    <a th:href="@{/expenses(groupId=${group.id})}"
+                       class="submenu-item">
+
+                        <span class="material-icons-round">
+                            receipt_long
+                        </span>
+
+                        <span>
+                            Expenses
+                        </span>
+
+                    </a>
+
+
+                    <a th:href="@{/settle-up(groupId=${group.id})}"
+                       class="submenu-item">
+
+                        <span class="material-icons-round">
+                            sync_alt
+                        </span>
+
+                        <span>
+                            Settle Up
+                        </span>
+
+                    </a>
+
+
+                    <a th:href="@{/people(groupId=${group.id})}"
+                       class="submenu-item">
+
+                        <span class="material-icons-round">
+                            groups
+                        </span>
+
+                        <span>
+                            People
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

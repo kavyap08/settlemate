@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
+          rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="main-layout">
+
+    <!-- SIDEBAR -->
+
+    <div th:replace="~{fragments/sidebar :: sidebar}">
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+
+    <div class="content">
+
+
+        <!-- HEADER -->
+
+        <div class="dashboard-header">
+
+            <div class="header-left">
+
+                <p class="workspace-text">
+                    Travel split workspace
+                </p>
+
+				<h1 class="group-title"
+				    th:text="${group != null ? group.groupName : 'Select a Group'}">
+
+				    Goa Weekend
+
+				</h1>
+
+            </div>
+
+
+            <div class="header-right">
+
+                <form th:action="@{/logout}" method="post">
+
+                    <button type="submit" class="header-btn">
+
+                        <span class="material-icons-round btn-icon">
+                            logout
+                        </span>
+
+                        Logout
+
+                    </button>
+
+                </form>
+
+
+                <a th:href="@{/invite}"
+                   style="text-decoration:none;">
+
+                    <button class="header-btn">
+
+                        <span class="material-icons-round btn-icon">
+                            person_add
+                        </span>
+
+                        Invite
+
+                    </button>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- STATS -->
+
+        <div class="stats-container">
+
+            <div class="stats-card">
+
+                <p class="stats-label">
+                    Total group spend
+                </p>
+
+                <h2 class="stats-value">
+                    ₹25,600
+                </h2>
+
+            </div>
+
+
+            <div class="stats-card">
+
+                <p class="stats-label">
+                    You are owed
+                </p>
+
+                <h2 class="stats-value">
+                    ₹0
+                </h2>
+
+            </div>
+
+
+            <div class="stats-card">
+
+                <p class="stats-label">
+                    You owe
+                </p>
+
+                <h2 class="stats-value">
+                    ₹0
+                </h2>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- MIDDLE -->
+
+        <div class="middle-section">
+
+            <div class="activity-card">
+
+                <div class="oval-line"></div>
+
+                <div class="floating-card top-expense">
+
+                    <h3>Top Expense</h3>
+
+                    <p>Vagator Villa</p>
+
+                    <span>₹12,000</span>
+
+                </div>
+
+
+                <div class="floating-card latest-activity">
+
+                    <h3>Latest Activity</h3>
+
+                    <p>Karan added Airport Cab</p>
+
+                </div>
+
+
+                <div class="floating-card members-card">
+
+                    <h3>Members</h3>
+
+                    <p>6 people</p>
+
+                </div>
+
+            </div>
+
+
+            <div class="quick-settle">
+
+                <h2>Quick Settles</h2>
+
+                <div class="settle-item">
+
+                    <p>Priya pays Aarav</p>
+                    <span>₹2660</span>
+
+                </div>
+
+                <div class="settle-item">
+
+                    <p>Meera pays Aarav</p>
+                    <span>₹1860</span>
+
+                </div>
+
+                <div class="settle-item">
+
+                    <p>Karan pays Aarav</p>
+                    <span>₹2020</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- BOTTOM -->
+
+        <div class="bottom-section">
+
+
+            <div class="recent-expenses">
+
+                <h2>Recent Expenses</h2>
+
+                <div class="expense-item">
+                    <span>Airport Cab</span>
+                    <strong>₹3200</strong>
+                </div>
+
+                <div class="expense-item">
+                    <span>Fort Aguada Tickets</span>
+                    <strong>₹2000</strong>
+                </div>
+
+                <div class="expense-item">
+                    <span>Scooter Rental</span>
+                    <strong>₹3600</strong>
+                </div>
+
+                <div class="expense-item">
+                    <span>Seafood Dinner</span>
+                    <strong>₹4800</strong>
+                </div>
+
+            </div>
+
+
+
+            <div class="category-card">
+
+                <h2>By Category</h2>
+
+
+                <div class="category-item">
+
+                    <div class="category-top">
+                        <span>Stay</span>
+                        <strong>₹12000</strong>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill fill-1"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="category-item">
+
+                    <div class="category-top">
+                        <span>Food</span>
+                        <strong>₹4800</strong>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill fill-2"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="category-item">
+
+                    <div class="category-top">
+                        <span>Transport</span>
+                        <strong>₹6800</strong>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill fill-3"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="category-item">
+
+                    <div class="category-top">
+                        <span>Activities</span>
+                        <strong>₹2000</strong>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill fill-4"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- MODAL EXACT TPM STYLE -->
+
+<div id="groupModal"
+     class="modal-overlay">
+
+    <div class="create-group-modal">
+
+        <div class="modal-top">
+
+            <div>
+
+                <h1>Create Group</h1>
+
+                <p>Start a new shared expense group.</p>
+
+            </div>
+
+
+            <button onclick="closeModal()"
+                    class="close-btn">
+
+                ✕
+
+            </button>
+
+        </div>
+
+
+
+        <form th:action="@{/save-group}" method="post">
+
+            <label>Group Name</label>
+
+            <input type="text"
+                   name="groupName"
+                   placeholder="Weekend in Manali">
+
+
+            <div class="people-header">
+
+                <h3>People</h3>
+
+                <button type="button"
+                        class="add-person-btn"
+                        id="addPersonBtn">
+
+                    <span class="material-icons-round">
+                        person_add
+                    </span>
+
+                    Add Person
+
+                </button>
+
+            </div>
+
+
+            <div id="membersContainer">
+
+                <div class="member-section">
+
+                    <div class="member-field">
+
+                        <label>Name</label>
+
+                        <input type="text"
+                               name="memberName"
+                               placeholder="Priya">
+
+                    </div>
+
+                    <div class="member-field">
+
+                        <label>Email</label>
+
+                        <input type="email"
+                               name="memberEmail"
+                               placeholder="name@email.com">
+
+                    </div>
+
+                    <button type="button"
+                            class="delete-btn removeRow">
+
+                        ✕
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button onclick="closeModal()"
+                        type="button"
+                        class="cancel-btn">
+
+                    Cancel
+
+                </button>
+
+
+                <button type="submit"
+                        class="create-btn">
+
+                    Create Group
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+<script>
+
+    /* EXACT TPM STYLE */
+
+    const modal = document.getElementById("groupModal");
+
+
+    /* OPEN */
+
+    function openModal() {
+
+        modal.classList.add("show");
+
+    }
+
+
+    /* CLOSE */
+
+    function closeModal() {
+
+        modal.classList.remove("show");
+
+    }
+
+
+    /* CLICK OUTSIDE */
+
+    window.addEventListener("click", function(e) {
+
+        if(e.target === modal) {
+
+            closeModal();
+
+        }
+
+    });
+
+
+    /* ADD PERSON */
+
+    const addPersonBtn = document.getElementById("addPersonBtn");
+
+    const membersContainer = document.getElementById("membersContainer");
+
+
+    addPersonBtn.addEventListener("click", function() {
+
+        const newRow = document.createElement("div");
+
+        newRow.classList.add("member-section");
+
+        newRow.innerHTML = `
+
+            <div class="member-field">
+
+                <label>Name</label>
+
+                <input type="text"
+                       name="memberName"
+                       placeholder="Enter name">
+
+            </div>
+
+            <div class="member-field">
+
+                <label>Email</label>
+
+                <input type="email"
+                       name="memberEmail"
+                       placeholder="Enter email">
+
+            </div>
+
+            <button type="button"
+                    class="delete-btn removeRow">
+
+                ✕
+
+            </button>
+
+        `;
+
+        membersContainer.appendChild(newRow);
+
+    });
+
+
+    /* DELETE PERSON ROW */
+
+    document.addEventListener("click", function(e) {
+
+        if(e.target.classList.contains("removeRow")) {
+
+            e.target.parentElement.remove();
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.example.demo.User;
 
 import java.util.List;
+import com.example.demo.Groups.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -16,6 +17,9 @@ public class UserController {
 
     @Autowired
     private UserService userservice;
+    
+    @Autowired
+    private GroupsService groupsService;
 
 
     // LOGIN PAGE
@@ -112,25 +116,25 @@ public class UserController {
 
     // DASHBOARD
     @GetMapping("/dashboard")
-    public String dashboard(Model model,
-                            HttpServletRequest request) {
+    public String dashboard(HttpServletRequest request, Model model) {
 
-        User user =
-          (User) request.getSession().getAttribute("sessionUser");
+        User user = (User) request.getSession().getAttribute("sessionUser");
 
-        if(user == null){
+        if(user == null) {
+
             return "redirect:/login";
+
         }
 
         model.addAttribute("user", user);
-        model.addAttribute("username", user.getName());
+
+        model.addAttribute("groups", groupsService.findAllGroups());
 
         return "dashboard";
     }
 
-
     // LOGOUT
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public String logout(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
@@ -139,4 +143,5 @@ public class UserController {
 
         return "redirect:/login";
     }
+    
 }
