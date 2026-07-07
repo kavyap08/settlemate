@@ -26,5 +26,50 @@ public class GroupMembersService {
         return groupMembersRepo.findByGroup(group);
 
     }
+    public GroupMembers findMember(int id){
+
+        return groupMembersRepo.findById(id).orElse(null);
+
+    }
+    public int countMembers(Groups group){
+
+        return groupMembersRepo.findByGroup(group).size();
+
+    }
+    public GroupMembers findMemberByName(Groups group, String name){
+
+        List<GroupMembers> members = groupMembersRepo.findByGroup(group);
+
+        for(GroupMembers member : members){
+
+            if(member.getName().equals(name)){
+
+                return member;
+
+            }
+
+        }
+
+        return null;
+
+    }
+    public GroupMembers findMemberByEmail(Groups group, String email){
+
+        List<GroupMembers> members = groupMembersRepo.findByGroup(group);
+
+        for(GroupMembers member : members){
+
+            if(member.getEmail().equals(email)){
+
+                return member;
+
+            }
+
+        }
+
+        return null;
+
+    }
+    
 
 }

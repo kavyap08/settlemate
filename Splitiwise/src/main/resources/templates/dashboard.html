@@ -102,7 +102,7 @@
                 </p>
 
                 <h2 class="stats-value">
-                    ₹25,600
+                  ₹<span th:text="${totalExpense}"></span>
                 </h2>
 
             </div>
@@ -110,26 +110,32 @@
 
             <div class="stats-card">
 
-                <p class="stats-label">
-                    You are owed
-                </p>
+				<p class="stats-label">
 
-                <h2 class="stats-value">
-                    ₹0
-                </h2>
+				    You are owed
 
+				</p>
+
+				<h2 class="stats-value">
+
+				    ₹<span th:text="${youAreOwed}"></span>
+
+				</h2>
             </div>
 
 
             <div class="stats-card">
+				<p class="stats-label">
 
-                <p class="stats-label">
-                    You owe
-                </p>
+				    You owe
 
-                <h2 class="stats-value">
-                    ₹0
-                </h2>
+				</p>
+
+				<h2 class="stats-value">
+
+				    ₹<span th:text="${youOwe}"></span>
+
+				</h2>
 
             </div>
 
@@ -169,7 +175,13 @@
 
                     <h3>Members</h3>
 
-                    <p>6 people</p>
+					<p>
+
+					    <span th:text="${memberCount}"></span>
+
+					    people
+
+					</p>
 
                 </div>
 
@@ -216,26 +228,15 @@
 
                 <h2>Recent Expenses</h2>
 
-                <div class="expense-item">
-                    <span>Airport Cab</span>
-                    <strong>₹3200</strong>
-                </div>
+				<div th:each="expense : ${recentExpenses}" class="expense-item">
 
-                <div class="expense-item">
-                    <span>Fort Aguada Tickets</span>
-                    <strong>₹2000</strong>
-                </div>
+				    <span th:text="${expense.expenseName}"></span>
 
-                <div class="expense-item">
-                    <span>Scooter Rental</span>
-                    <strong>₹3600</strong>
-                </div>
+				    <strong>
+				        ₹<span th:text="${expense.amount}"></span>
+				    </strong>
 
-                <div class="expense-item">
-                    <span>Seafood Dinner</span>
-                    <strong>₹4800</strong>
-                </div>
-
+				</div>
             </div>
 
 
@@ -249,7 +250,11 @@
 
                     <div class="category-top">
                         <span>Stay</span>
-                        <strong>₹12000</strong>
+						<strong>
+
+						₹<span th:text="${stayTotal}"></span>
+
+						</strong>
                     </div>
 
                     <div class="progress-bar">
@@ -263,7 +268,11 @@
 
                     <div class="category-top">
                         <span>Food</span>
-                        <strong>₹4800</strong>
+						<strong>
+
+						₹<span th:text="${foodTotal}"></span>
+
+						</strong>
                     </div>
 
                     <div class="progress-bar">
@@ -277,7 +286,11 @@
 
                     <div class="category-top">
                         <span>Transport</span>
-                        <strong>₹6800</strong>
+						<strong>
+
+						₹<span th:text="${transportTotal}"></span>
+
+						</strong>
                     </div>
 
                     <div class="progress-bar">
@@ -291,7 +304,11 @@
 
                     <div class="category-top">
                         <span>Activities</span>
-                        <strong>₹2000</strong>
+						<strong>
+
+						₹<span th:text="${activitiesTotal}"></span>
+
+						</strong>
                     </div>
 
                     <div class="progress-bar">
@@ -299,6 +316,22 @@
                     </div>
 
                 </div>
+				<div class="category-item">
+
+				                    <div class="category-top">
+				                        <span>Others</span>
+										<strong>
+
+										₹<span th:text="${othersTotal}"></span>
+
+										</strong>
+				                    </div>
+
+				                    <div class="progress-bar">
+				                        <div class="progress-fill fill-5"></div>
+				                    </div>
+
+				                </div>
 
             </div>
 

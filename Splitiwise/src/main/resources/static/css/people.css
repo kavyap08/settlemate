@@ -1,0 +1,601 @@
+/* ==========================================
+   PEOPLE PAGE LAYOUT
+========================================== */
+
+.people-container{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:28px;
+
+    margin-top:40px;
+
+    align-items:start;
+
+}
+
+
+
+/* ==========================================
+   LEFT PANEL
+========================================== */
+
+.travellers-panel{
+
+    background:#ffffff;
+
+    border-radius:22px;
+
+    border:1px solid #e7eef2;
+
+    padding:28px;
+
+    box-shadow:0 8px 20px rgba(15,23,42,.05);
+
+}
+
+
+
+/* ==========================================
+   RIGHT PANEL
+========================================== */
+
+.activity-panel{
+
+    background:#ffffff;
+
+    border-radius:22px;
+
+    border:1px solid #e7eef2;
+
+    padding:28px;
+
+    box-shadow:0 8px 20px rgba(15,23,42,.05);
+
+}
+
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.travellers-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:28px;
+
+}
+
+.travellers-header h2{
+
+    font-size:34px;
+
+    font-weight:800;
+
+    color:#0f172a;
+
+}
+
+.travellers-header p{
+
+    margin-top:6px;
+
+    color:#64748b;
+
+    font-size:15px;
+
+}
+
+
+
+/* ==========================================
+   ADD BUTTON
+========================================== */
+
+.add-member-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    border:none;
+
+    background:#12968e;
+
+    color:white;
+
+    padding:14px 22px;
+
+    border-radius:14px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.add-member-btn:hover{
+
+    background:#0f7f79;
+
+    transform:translateY(-2px);
+
+}
+
+
+
+/* ==========================================
+   SEARCH
+========================================== */
+
+.search-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    background:#f8fbfc;
+
+    border:1px solid #dbe5ea;
+
+    border-radius:14px;
+
+    padding:15px 18px;
+
+    margin-bottom:28px;
+
+}
+
+.search-box input{
+
+    flex:1;
+
+    border:none;
+
+    background:transparent;
+
+    outline:none;
+
+    font-size:15px;
+
+}
+
+.search-box .material-icons-round{
+
+    color:#94a3b8;
+
+}
+
+
+
+/* ==========================================
+   LIST
+========================================== */
+
+.people-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+/* ==========================================
+   PERSON CARD
+========================================== */
+
+.person-card{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:22px;
+
+    border:1px solid #e7eef2;
+
+    border-radius:18px;
+
+    background:white;
+
+    transition:.25s;
+
+}
+
+.person-card:hover{
+
+    transform:translateY(-3px);
+
+    border-color:#12968e;
+
+    box-shadow:0 12px 25px rgba(15,23,42,.08);
+
+}
+
+
+/* ==========================================
+   LEFT SIDE
+========================================== */
+
+.person-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+.avatar{
+
+    width:62px;
+
+    height:62px;
+
+    border-radius:18px;
+
+    background:#e8faf8;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.avatar .material-icons-round{
+
+    font-size:34px;
+
+    color:#12968e;
+
+}
+
+
+/* ==========================================
+   PERSON INFO
+========================================== */
+
+.person-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+.person-name-row{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.person-name-row h3{
+
+    font-size:22px;
+
+    font-weight:700;
+
+    color:#0f172a;
+
+}
+
+
+/* ==========================================
+   YOU BADGE
+========================================== */
+
+.you-badge{
+
+    background:#dff7f4;
+
+    color:#12968e;
+
+    padding:5px 12px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+
+
+/* ==========================================
+   BALANCE
+========================================== */
+
+.gets-back{
+
+    color:#16a34a;
+
+    font-weight:700;
+
+    font-size:15px;
+
+}
+
+.owes{
+
+    color:#dc2626;
+
+    font-weight:700;
+
+    font-size:15px;
+
+}
+
+.settled{
+
+    color:#64748b;
+
+    font-weight:600;
+
+    font-size:15px;
+
+}
+
+.money-row{
+
+    display:flex;
+
+    gap:30px;
+
+    color:#64748b;
+
+    font-size:14px;
+
+}
+
+.money-row span{
+
+    font-weight:600;
+
+}
+
+
+/* ==========================================
+   ACTION BUTTONS
+========================================== */
+
+.person-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.action-btn{
+
+    width:46px;
+
+    height:46px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#f8fbfc;
+
+    border:1px solid #e7eef2;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.action-btn:hover{
+
+    background:#12968e;
+
+    border-color:#12968e;
+
+}
+
+.action-btn:hover .material-icons-round{
+
+    color:white;
+
+}
+
+.action-btn .material-icons-round{
+
+    color:#64748b;
+
+    font-size:22px;
+
+}
+
+
+/* ==========================================
+   ACTIVITY
+========================================== */
+
+.activity-header{
+
+    margin-bottom:24px;
+
+}
+
+.activity-header h2{
+
+    font-size:30px;
+
+    font-weight:800;
+
+}
+
+.activity-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.activity-card{
+
+    display:flex;
+
+    gap:16px;
+
+    padding:16px;
+
+    background:#f8fbfc;
+
+    border-radius:16px;
+
+    border:1px solid #edf2f5;
+
+}
+
+.activity-icon{
+
+    width:50px;
+
+    height:50px;
+
+    border-radius:14px;
+
+    background:#dff7f4;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.activity-icon .material-icons-round{
+
+    color:#12968e;
+
+}
+
+.activity-info{
+
+    flex:1;
+
+}
+
+.activity-info h4{
+
+    font-size:17px;
+
+    margin-bottom:6px;
+
+    color:#0f172a;
+
+}
+
+.activity-info p{
+
+    color:#64748b;
+
+    font-size:14px;
+
+    margin-bottom:6px;
+
+}
+
+.activity-info strong{
+
+    font-size:18px;
+
+    color:#12968e;
+
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:1100px){
+
+    .people-container{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .travellers-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:20px;
+
+    }
+
+    .person-card{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:18px;
+
+    }
+
+    .person-right{
+
+        width:100%;
+
+        justify-content:flex-end;
+
+    }
+
+    .money-row{
+
+        flex-direction:column;
+
+        gap:8px;
+
+    }
+
+}

@@ -23,6 +23,7 @@ public class Expense {
     private String paidBy;
 
     private LocalDate expenseDate;
+    
 
     @ManyToOne
     @JoinColumn(name = "group_id")

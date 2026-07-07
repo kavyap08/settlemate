@@ -1,0 +1,1194 @@
+/* ==========================================
+   GLOBAL
+========================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:'Inter',sans-serif;
+
+    background:#eef8f7;
+
+    color:#0f172a;
+
+}
+
+.main-layout{
+
+    display:flex;
+
+    min-height:100vh;
+
+}
+
+.content{
+
+    flex:1;
+
+    padding:35px;
+
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.dashboard-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    margin-bottom:35px;
+
+}
+
+.workspace-text{
+
+    color:#64748b;
+
+    font-size:18px;
+
+}
+
+.group-title{
+
+    font-size:54px;
+
+    font-weight:800;
+
+    margin-top:8px;
+
+}
+
+.header-right{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+.header-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    background:white;
+
+    border:1px solid #d8e2e8;
+
+    border-radius:14px;
+
+    padding:14px 22px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+.header-btn:hover{
+
+    background:#12968e;
+
+    color:white;
+
+}
+
+
+/* ==========================================
+   TOOLBAR
+========================================== */
+
+.expense-toolbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:35px;
+
+}
+
+.expense-toolbar h2{
+
+    font-size:36px;
+
+    font-weight:800;
+
+}
+
+.add-expense-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    border:none;
+
+    background:#12968e;
+
+    color:white;
+
+    padding:15px 28px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    transition:.25s;
+
+}
+
+.add-expense-btn:hover{
+
+    background:#0f7f79;
+
+    transform:translateY(-2px);
+
+}
+/* ==================================================
+   EXPENSE MODAL
+================================================== */
+
+.modal-overlay{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,.45);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:.3s;
+
+    z-index:1000;
+
+}
+
+.modal-overlay.show{
+
+    opacity:1;
+
+    visibility:visible;
+
+}
+
+
+/* ==================================================
+   MODAL
+================================================== */
+
+.expense-modal{
+
+    width:650px;
+
+    max-width:95%;
+
+    background:#ffffff;
+
+    border-radius:22px;
+
+    padding:35px;
+
+    box-shadow:0 25px 60px rgba(0,0,0,.18);
+
+    transform:translateY(35px);
+
+    transition:.3s;
+
+}
+
+.modal-overlay.show .expense-modal{
+
+    transform:translateY(0);
+
+}
+
+
+/* ==================================================
+   HEADER
+================================================== */
+
+.modal-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    margin-bottom:30px;
+
+}
+
+.modal-header h2{
+
+    font-size:30px;
+
+    font-weight:800;
+
+    color:#1f2937;
+
+    margin-bottom:6px;
+
+}
+
+.modal-header p{
+
+    color:#64748b;
+
+    font-size:15px;
+
+}
+
+
+/* ==================================================
+   CLOSE BUTTON
+================================================== */
+
+.close-btn{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    background:#fee2e2;
+
+    color:#dc2626;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    transition:.25s;
+
+}
+
+.close-btn:hover{
+
+    background:#dc2626;
+
+    color:white;
+
+}
+
+
+/* ==================================================
+   FORM
+================================================== */
+
+.expense-modal form{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.expense-modal label{
+
+    margin-top:18px;
+
+    margin-bottom:8px;
+
+    font-weight:600;
+
+    color:#334155;
+
+}
+
+.expense-modal input,
+
+.expense-modal select{
+
+    width:100%;
+
+    padding:14px 16px;
+
+    border:1px solid #d6dee5;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:.25s;
+
+}
+
+.expense-modal input:focus,
+
+.expense-modal select:focus{
+
+    border-color:#12968e;
+
+    box-shadow:0 0 0 4px rgba(18,150,142,.12);
+
+}
+
+
+/* ==================================================
+   SPLIT MEMBERS
+================================================== */
+
+.split-heading{
+
+    margin-top:28px;
+
+    margin-bottom:18px;
+
+    font-size:20px;
+
+    font-weight:700;
+
+}
+
+.member-list{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:14px;
+
+}
+
+.member-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    background:#f8fafc;
+
+    border:1px solid #dbe5ea;
+
+    border-radius:14px;
+
+    padding:14px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.member-item:hover{
+
+    border-color:#12968e;
+
+    background:#edf9f8;
+
+}
+
+.member-item input{
+
+    width:18px;
+
+    height:18px;
+
+}
+
+.member-item span{
+
+    font-weight:600;
+
+    color:#334155;
+
+}
+
+
+/* ==================================================
+   MODAL FOOTER
+================================================== */
+
+.modal-footer{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:15px;
+
+    margin-top:35px;
+
+}
+
+.modal-footer .cancel-btn{
+
+    background:white;
+
+    color:#64748b;
+
+    border:1px solid #d6dee5;
+
+    text-decoration:none;
+
+    padding:13px 22px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+}
+
+.modal-footer .cancel-btn:hover{
+
+    background:#f8fafc;
+
+}
+
+.modal-footer .save-btn{
+
+    border:none;
+
+    background:#12968e;
+
+    color:white;
+
+    padding:13px 24px;
+
+    border-radius:12px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    cursor:pointer;
+
+    font-weight:700;
+
+    transition:.25s;
+
+}
+
+.modal-footer .save-btn:hover{
+
+    background:#0f7f79;
+
+}
+/* ==========================================
+   EXPENSE LIST
+========================================== */
+
+.expense-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+
+.expense-card{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:#ffffff;
+
+    border-radius:20px;
+
+    padding:22px 26px;
+
+    box-shadow:0 8px 20px rgba(15,23,42,.06);
+
+    transition:all .25s ease;
+
+    border:1px solid #e7eef2;
+
+}
+
+
+.expense-card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 18px 35px rgba(15,23,42,.12);
+
+    border-color:#12968e;
+
+}
+
+
+
+/* ==========================================
+   EXPENSE LEFT
+========================================== */
+
+.expense-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+
+.expense-icon{
+
+    width:58px;
+
+    height:58px;
+
+    border-radius:18px;
+
+    background:#e7faf8;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+
+.expense-icon .material-icons-round{
+
+    color:#12968e;
+
+    font-size:30px;
+
+}
+
+
+.expense-left h3{
+
+    font-size:19px;
+
+    color:#1f2937;
+
+    margin-bottom:5px;
+
+}
+
+
+.expense-left p{
+
+    color:#64748b;
+
+    font-size:14px;
+
+    margin-bottom:6px;
+
+}
+
+
+.expense-left small{
+
+    display:inline-block;
+
+    background:#edf9f8;
+
+    color:#12968e;
+
+    padding:5px 12px;
+
+    border-radius:20px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+
+
+/* ==========================================
+   EXPENSE RIGHT
+========================================== */
+
+.expense-right{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-end;
+
+    gap:8px;
+
+}
+
+
+.expense-right h2{
+
+    font-size:28px;
+
+    font-weight:800;
+
+    color:#0f172a;
+
+}
+
+
+.expense-right small{
+
+    color:#94a3b8;
+
+    font-size:13px;
+
+}
+
+
+
+/* ==========================================
+   TOOLBAR
+========================================== */
+
+.expense-toolbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+}
+
+
+.expense-toolbar h2{
+
+    font-size:34px;
+
+    font-weight:800;
+
+    color:#1e293b;
+
+}
+
+
+.add-expense-btn{
+
+    border:none;
+
+    background:#12968e;
+
+    color:white;
+
+    padding:14px 24px;
+
+    border-radius:14px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    transition:.25s;
+
+}
+
+
+.add-expense-btn:hover{
+
+    background:#0f7f79;
+
+    transform:translateY(-2px);
+
+}
+
+
+
+/* ==========================================
+   EMPTY CARD
+========================================== */
+
+.empty-card{
+
+    background:white;
+
+    border-radius:24px;
+
+    padding:80px 40px;
+
+    text-align:center;
+
+    box-shadow:0 8px 24px rgba(0,0,0,.05);
+
+}
+
+
+.empty-icon{
+
+    font-size:75px;
+
+    color:#cbd5e1;
+
+    margin-bottom:20px;
+
+}
+
+
+.empty-card h2{
+
+    color:#1f2937;
+
+    margin-bottom:12px;
+
+}
+
+
+.empty-card p{
+
+    color:#64748b;
+
+}
+
+
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#b8d8d5;
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#12968e;
+
+}
+
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media(max-width:1100px){
+
+    .dashboard-header{
+
+        flex-direction:column;
+
+        gap:25px;
+
+    }
+
+    .expense-toolbar{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:20px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .content{
+
+        padding:20px;
+
+    }
+
+    .group-title{
+
+        font-size:34px;
+
+    }
+
+    .expense-card{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:18px;
+
+    }
+
+    .expense-right{
+
+        align-items:flex-start;
+
+    }
+
+    .member-list{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .modal-footer{
+
+        flex-direction:column;
+
+    }
+
+    .modal-footer button{
+
+        width:100%;
+
+    }
+
+}
+/* ==========================================
+   EXPENSE LIST
+========================================== */
+
+.expense-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+
+}
+
+.expense-card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:24px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+
+    border:1px solid #e2e8f0;
+
+    transition:.25s;
+
+}
+
+.expense-card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 15px 30px rgba(0,0,0,.08);
+
+    border-color:#12968e;
+
+}
+
+
+/* ==========================================
+   LEFT
+========================================== */
+
+.expense-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+.expense-icon{
+
+    width:60px;
+
+    height:60px;
+
+    border-radius:18px;
+
+    background:#e8fbfa;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.expense-icon .material-icons-round{
+
+    color:#12968e;
+
+    font-size:32px;
+
+}
+
+.expense-left h3{
+
+    font-size:24px;
+
+    margin-bottom:6px;
+
+}
+
+.expense-left p{
+
+    color:#64748b;
+
+    margin-bottom:8px;
+
+}
+
+.expense-left small{
+
+    display:inline-block;
+
+    background:#e8fbfa;
+
+    color:#12968e;
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    font-weight:600;
+
+}
+
+
+/* ==========================================
+   RIGHT
+========================================== */
+
+.expense-right{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-end;
+
+    gap:10px;
+
+}
+
+.expense-right h2{
+
+    font-size:38px;
+
+    font-weight:800;
+
+}
+
+.expense-right small{
+
+    color:#94a3b8;
+
+}
+
+
+/* ==========================================
+   EMPTY CARD
+========================================== */
+
+.empty-card{
+
+    background:white;
+
+    border-radius:24px;
+
+    padding:90px;
+
+    text-align:center;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+
+}
+
+.empty-icon{
+
+    font-size:70px;
+
+    color:#cbd5e1;
+
+    margin-bottom:20px;
+
+}
+
+.empty-card h2{
+
+    margin-bottom:12px;
+
+}
+
+.empty-card p{
+
+    color:#64748b;
+
+}
+.expense-actions{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:15px;
+
+}
+
+.edit-btn{
+
+    text-decoration:none;
+
+    background:#12968e;
+
+    color:white;
+
+    padding:8px 16px;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.edit-btn:hover{
+
+    background:#0f7f79;
+
+}
+
+.delete-btn{
+
+    border:none;
+
+    background:#ef4444;
+
+    color:white;
+
+    padding:8px 16px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.delete-btn:hover{
+
+    background:#dc2626;
+
+}
+.category-filter{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-bottom:25px;
+
+    flex-wrap:wrap;
+
+}
+
+.category-btn{
+
+    text-decoration:none;
+
+    padding:10px 18px;
+
+    border:1px solid #d8e2e8;
+
+    border-radius:12px;
+
+    background:white;
+
+    color:#64748b;
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+.category-btn:hover{
+
+    background:#12968e;
+
+    color:white;
+
+    border-color:#12968e;
+
+}

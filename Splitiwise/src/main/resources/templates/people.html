@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<title>People</title>
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+	<link rel="stylesheet" th:href="@{/css/dashboard.css}">
+
+	<link rel="stylesheet" th:href="@{/css/people.css}">
+
+</head>
+
+<body>
+
+	<div class="main-layout">
+
+		<!-- Sidebar -->
+
+		<div th:replace="~{fragments/sidebar :: sidebar}">
+		</div>
+
+
+
+		<!-- Main Content -->
+
+		<div class="content">
+
+
+
+			<!-- Header -->
+
+			<div class="dashboard-header">
+
+				<div class="header-left">
+
+					<p class="workspace-text">
+
+						Travel Split Workspace
+
+					</p>
+
+					<h1 class="group-title" th:text="${groupSelected.groupName}">
+
+						Goa Weekend
+
+					</h1>
+
+				</div>
+
+
+
+				<div class="header-right">
+
+					<form th:action="@{/logout}" method="post">
+
+						<button class="header-btn">
+
+							<span class="material-icons-round btn-icon">
+
+								logout
+
+							</span>
+
+							Logout
+
+						</button>
+
+					</form>
+
+
+
+					<button class="header-btn">
+
+						<span class="material-icons-round btn-icon">
+
+							person_add
+
+						</span>
+
+						Invite
+
+					</button>
+
+				</div>
+
+			</div>
+
+
+
+			<!-- Main Layout -->
+
+			<div class="people-container">
+
+
+
+				<!-- LEFT PANEL -->
+
+				<div class="travellers-panel">
+
+
+
+					<!-- Card Header -->
+
+					<div class="travellers-header">
+
+						<div>
+
+							<h2>
+
+								Travelers
+
+							</h2>
+
+							<p>
+
+								Manage all members in this group
+
+							</p>
+
+						</div>
+
+
+
+						<button class="add-member-btn">
+
+							<span class="material-icons-round">
+
+								person_add
+
+							</span>
+
+							Add Member
+
+						</button>
+
+					</div>
+
+
+
+					<!-- Search -->
+
+					<div class="search-box">
+
+						<span class="material-icons-round">
+
+							search
+
+						</span>
+
+						<input type="text" placeholder="Search travelers...">
+
+					</div>
+
+
+
+					<!-- Members -->
+
+					<div class="people-list">
+
+						<div class="person-card" th:each="person : ${people}">
+
+
+
+							<div class="person-left">
+
+
+
+								<div class="avatar">
+
+									<span class="material-icons-round">
+
+										person
+
+									</span>
+
+								</div>
+
+
+
+								<div class="person-info">
+
+									<div class="person-name-row">
+
+										<h3 th:text="${person.name}">
+
+											Kavya
+
+										</h3>
+
+										<span class="you-badge" th:if="${person.currentUser}">
+
+											You
+
+										</span>
+
+									</div>
+									<p class="gets-back" th:if="${person.balance > 0}">
+
+										Gets back
+
+										<strong>
+
+											₹<span th:text="${person.balance}"></span>
+
+										</strong>
+
+									</p>
+
+
+
+									<p class="owes" th:if="${person.balance < 0}">
+
+										Owes
+
+										<strong>
+
+											₹<span th:text="${-person.balance}"></span>
+
+										</strong>
+
+									</p>
+
+
+
+									<p class="settled" th:if="${person.balance == 0}">
+
+										Settled Up
+
+									</p>
+
+
+
+									<div class="money-row">
+
+										<span>
+
+											Paid
+
+											₹<span th:text="${person.paid}"></span>
+
+										</span>
+
+										<span>
+
+											Share
+
+											₹<span th:text="${person.share}"></span>
+
+										</span>
+
+									</div>
+
+								</div>
+
+							</div>
+
+
+
+							<!-- RIGHT -->
+
+							<div class="person-right">
+
+								<button class="action-btn">
+
+									<span class="material-icons-round">
+
+										edit
+
+									</span>
+
+								</button>
+
+
+
+								<button class="action-btn" th:if="${!person.currentUser}">
+
+									<span class="material-icons-round">
+
+										delete
+
+									</span>
+
+								</button>
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+
+
+				<!-- RIGHT PANEL -->
+
+				<div class="activity-panel">
+
+					<div class="activity-header">
+
+						<h2>
+
+							Recent Activity
+
+						</h2>
+
+					</div>
+
+
+
+					<div class="activity-list">
+
+						<div class="activity-card" th:each="expense : ${recentExpenses}">
+
+							<div class="activity-icon">
+
+								<span class="material-icons-round">
+
+									receipt_long
+
+								</span>
+
+							</div>
+
+
+
+							<div class="activity-info">
+
+								<h4>
+
+									<span th:text="${expense.expenseName}">
+
+									</span>
+
+								</h4>
+
+
+
+								<p>
+
+									Paid by
+
+									<span th:text="${expense.paidBy}"></span>
+
+								</p>
+
+
+
+								<strong>
+
+									₹<span th:text="${expense.amount}"></span>
+
+								</strong>
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+</body>
+
+</html>

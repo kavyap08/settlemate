@@ -1,6 +1,7 @@
 package com.example.demo.Groups;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,91 +10,138 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.example.demo.User.User;
 import com.example.demo.Groupmembers.*;
 
+import com.example.demo.Expense.*;
+import com.example.demo.ExpenseParticipant.ExpenseParticipantService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class GroupsController {
+	
+	@Autowired
+	private ExpenseParticipantService expenseParticipantService;
 
-    @Autowired
-    private GroupsService groupsService;
-    
-    @Autowired
-    private GroupMembersService groupmembersService;
-    
-    
+	@Autowired
+	private GroupsService groupsService;
 
-    @PostMapping("/save-group")
-    public String saveGroup(HttpServletRequest request) {
+	@Autowired
+	private GroupMembersService groupmembersService;
 
-        User user = (User) request.getSession().getAttribute("sessionUser");
+	@Autowired
+	private ExpenseService expenseService;
 
-        if(user == null) {
+	@PostMapping("/save-group")
+	public String saveGroup(HttpServletRequest request) {
 
-            return "redirect:/login";
-        }
+		User user = (User) request.getSession().getAttribute("sessionUser");
 
-        String groupName = request.getParameter("groupName");
+		if (user == null) {
 
-        Groups group = new Groups();
+			return "redirect:/login";
+		}
 
-        group.setGroupName(groupName);
+		String groupName = request.getParameter("groupName");
 
-        // Save group first
-         groupsService.addGroup(group);
+		Groups group = new Groups();
 
-        // Get all members
-        String[] names = request.getParameterValues("memberName");
-        String[] emails = request.getParameterValues("memberEmail");
+		group.setGroupName(groupName);
 
-        if(names != null && emails != null) {
+		// Save group first
+		groupsService.addGroup(group);
 
-            for(int i = 0; i < names.length; i++) {
+		// Get all members
+		String[] names = request.getParameterValues("memberName");
+		String[] emails = request.getParameterValues("memberEmail");
 
-                if(names[i] != null && !names[i].trim().isEmpty()) {
+		if (names != null && emails != null) {
 
-                    GroupMembers member = new GroupMembers();
+			for (int i = 0; i < names.length; i++) {
 
-                    member.setName(names[i]);
+				if (names[i] != null && !names[i].trim().isEmpty()) {
 
-                    member.setEmail(emails[i]);
+					GroupMembers member = new GroupMembers();
 
-                    member.setGroup(group);
+					member.setName(names[i]);
 
-                    groupmembersService.addMember(member);
+					member.setEmail(emails[i]);
 
-                }
+					member.setGroup(group);
 
-            }
+					groupmembersService.addMember(member);
 
-        }
+				}
 
-        return "redirect:/dashboard?success=groupCreated";
-    }
-    
-    @GetMapping("/group")
-    public String openGroup(HttpServletRequest request,
-                            Model model) {
+			}
 
-        User user = (User) request.getSession().getAttribute("sessionUser");
+		}
 
-        if(user == null) {
+		return "redirect:/dashboard?success=groupCreated";
+	}
 
-            return "redirect:/login";
-        }
+	@GetMapping("/group")
+	public String openGroup(HttpServletRequest request, Model model) {
 
-        String idValue = request.getParameter("id");
+		User user = (User) request.getSession().getAttribute("sessionUser");
 
-        int id = Integer.parseInt(idValue);
+		if (user == null) {
 
-        Groups group = groupsService.findGroup(id);
+			return "redirect:/login";
+		}
 
-        model.addAttribute("user", user);
-        model.addAttribute("groupSelected", group);
-        model.addAttribute("groups",
-                groupsService.findAllGroups());
+		String idValue = request.getParameter("id");
 
-        return "dashboard";
-    }
+		int id = Integer.parseInt(idValue);
+
+		Groups group = groupsService.findGroup(id);
+
+		model.addAttribute("user", user);
+		model.addAttribute("groupSelected", group);
+		model.addAttribute("groups", groupsService.findAllGroups());
+		model.addAttribute("totalExpense", expenseService.getTotalExpense(group.getId()));
+
+		model.addAttribute("memberCount", groupmembersService.countMembers(group));
+		model.addAttribute("recentExpenses", expenseService.latestExpenses(group));
+		model.addAttribute("stayTotal", expenseService.getStayTotal(group.getId()));
+
+		model.addAttribute("foodTotal", expenseService.getFoodTotal(group.getId()));
+
+		model.addAttribute("transportTotal", expenseService.getTransportTotal(group.getId()));
+
+		model.addAttribute("shoppingTotal", expenseService.getShoppingTotal(group.getId()));
+
+		model.addAttribute("activitiesTotal", expenseService.getActivitiesTotal(group.getId()));
+
+		model.addAttribute("othersTotal", expenseService.getOthersTotal(group.getId()));
+		
+		
+		GroupMembers member = groupmembersService.findMemberByEmail(group, user.getEmail());
+
+		double paid = expenseService.getPaidByUser(user.getEmail(), group.getId());
+
+		double share = expenseParticipantService.getTotalShare(member);
+		
+		double balance = paid - share;
+
+		model.addAttribute("balance", balance);
+		
+		if(balance >= 0){
+
+		    model.addAttribute("youAreOwed", balance);
+		    model.addAttribute("youOwe", 0);
+
+		}else{
+
+		    model.addAttribute("youAreOwed", 0);
+		    model.addAttribute("youOwe", Math.abs(balance));
+
+		}
+
+		model.addAttribute("paid", paid);
+		model.addAttribute("share",share);
+		System.out.println("Paid = " + paid);
+		System.out.println("Share = " + share);
+		System.out.println("Balance = " + balance);
+		return "dashboard";
+	}
 
 }
