@@ -61,7 +61,8 @@ public class ExpenseController {
 
 		model.addAttribute("user", user);
 		model.addAttribute("groupSelected", group);
-		model.addAttribute("groups", groupsService.findAllGroups());
+		model.addAttribute("groups",
+		        groupsService.getGroupsForUser(user));
 
 		model.addAttribute("members", groupMembersService.getMembersByGroup(group));
 		return "expenses";

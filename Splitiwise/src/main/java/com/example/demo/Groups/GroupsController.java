@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.User.User;
+import com.example.demo.User.UserService;
 import com.example.demo.Groupmembers.*;
 
 import com.example.demo.Expense.*;
@@ -18,6 +19,8 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 public class GroupsController {
 	
+	@Autowired
+	private UserService userService;
 	@Autowired
 	private ExpenseParticipantService expenseParticipantService;
 
@@ -33,49 +36,91 @@ public class GroupsController {
 	@PostMapping("/save-group")
 	public String saveGroup(HttpServletRequest request) {
 
-		User user = (User) request.getSession().getAttribute("sessionUser");
+	    User user = (User) request.getSession().getAttribute("sessionUser");
 
-		if (user == null) {
+	    if (user == null) {
 
-			return "redirect:/login";
-		}
+	        return "redirect:/login";
 
-		String groupName = request.getParameter("groupName");
+	    }
 
-		Groups group = new Groups();
+	    String groupName = request.getParameter("groupName");
 
-		group.setGroupName(groupName);
+	    String[] names = request.getParameterValues("memberName");
+	    String[] emails = request.getParameterValues("memberEmail");
 
-		// Save group first
-		groupsService.addGroup(group);
+	    // Validate all member emails first
+	    if (emails != null) {
 
-		// Get all members
-		String[] names = request.getParameterValues("memberName");
-		String[] emails = request.getParameterValues("memberEmail");
+	        for (String email : emails) {
 
-		if (names != null && emails != null) {
+	            if (email != null
+	                    && !email.trim().isEmpty()
+	                    && !email.equalsIgnoreCase(user.getEmail())) {
 
-			for (int i = 0; i < names.length; i++) {
+	                User existingUser = userService.findByEmail(email);
 
-				if (names[i] != null && !names[i].trim().isEmpty()) {
+	                if (existingUser == null) {
 
-					GroupMembers member = new GroupMembers();
+	                    return "redirect:/dashboard?error=" + email;
 
-					member.setName(names[i]);
+	                }
 
-					member.setEmail(emails[i]);
+	            }
 
-					member.setGroup(group);
+	        }
 
-					groupmembersService.addMember(member);
+	    }
 
-				}
+	    // Create group only after all emails are validated
+	    Groups group = new Groups();
 
-			}
+	    group.setGroupName(groupName);
+	    
+	    group.setActive(true);
 
-		}
+	    groupsService.addGroup(group);
 
-		return "redirect:/dashboard?success=groupCreated";
+	    // Add creator as first member
+	    GroupMembers creator = new GroupMembers();
+
+	    creator.setName(user.getName());
+
+	    creator.setEmail(user.getEmail());
+
+	    creator.setGroup(group);
+
+	    groupmembersService.addMember(creator);
+
+	    // Add remaining members
+	    if (names != null && emails != null) {
+
+	        for (int i = 0; i < names.length; i++) {
+
+	            if (names[i] != null
+	                    && !names[i].trim().isEmpty()
+	                    && !emails[i].equalsIgnoreCase(user.getEmail())) {
+
+	                User existingUser = userService.findByEmail(emails[i]);
+
+	                GroupMembers member = new GroupMembers();
+
+	                member.setName(existingUser.getName());
+
+	                member.setEmail(existingUser.getEmail());
+
+	                member.setGroup(group);
+
+	                groupmembersService.addMember(member);
+
+	            }
+
+	        }
+
+	    }
+
+	    return "redirect:/dashboard?success=groupCreated";
+
 	}
 
 	@GetMapping("/group")
@@ -93,10 +138,16 @@ public class GroupsController {
 		int id = Integer.parseInt(idValue);
 
 		Groups group = groupsService.findGroup(id);
+		
+		if(group == null || !group.isActive()){
+
+		    return "redirect:/dashboard";
+
+		}
 
 		model.addAttribute("user", user);
 		model.addAttribute("groupSelected", group);
-		model.addAttribute("groups", groupsService.findAllGroups());
+		model.addAttribute("groups", groupsService.getGroupsForUser(user));
 		model.addAttribute("totalExpense", expenseService.getTotalExpense(group.getId()));
 
 		model.addAttribute("memberCount", groupmembersService.countMembers(group));
@@ -112,36 +163,47 @@ public class GroupsController {
 		model.addAttribute("activitiesTotal", expenseService.getActivitiesTotal(group.getId()));
 
 		model.addAttribute("othersTotal", expenseService.getOthersTotal(group.getId()));
-		
-		
+
 		GroupMembers member = groupmembersService.findMemberByEmail(group, user.getEmail());
 
 		double paid = expenseService.getPaidByUser(user.getEmail(), group.getId());
 
 		double share = expenseParticipantService.getTotalShare(member);
-		
+
 		double balance = paid - share;
 
 		model.addAttribute("balance", balance);
-		
-		if(balance >= 0){
 
-		    model.addAttribute("youAreOwed", balance);
-		    model.addAttribute("youOwe", 0);
+		if (balance >= 0) {
 
-		}else{
+			model.addAttribute("youAreOwed", balance);
+			model.addAttribute("youOwe", 0);
 
-		    model.addAttribute("youAreOwed", 0);
-		    model.addAttribute("youOwe", Math.abs(balance));
+		} else {
+
+			model.addAttribute("youAreOwed", 0);
+			model.addAttribute("youOwe", Math.abs(balance));
 
 		}
 
 		model.addAttribute("paid", paid);
-		model.addAttribute("share",share);
+		model.addAttribute("share", share);
 		System.out.println("Paid = " + paid);
 		System.out.println("Share = " + share);
 		System.out.println("Balance = " + balance);
 		return "dashboard";
+	}
+	
+	@PostMapping("/delete-group")
+	public String deleteGroup(HttpServletRequest request){
+
+	    int groupId =
+	            Integer.parseInt(request.getParameter("groupId"));
+
+	    groupsService.deleteGroup(groupId);
+
+	    return "redirect:/dashboard";
+
 	}
 
 }

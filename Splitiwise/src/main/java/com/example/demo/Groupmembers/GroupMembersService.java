@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.Expense.ExpenseRepo;
+import com.example.demo.ExpenseParticipant.ExpenseParticipantRepo;
 import com.example.demo.Groups.Groups;
 
 @Service
@@ -12,6 +14,27 @@ public class GroupMembersService {
 
     @Autowired
     private GroupMembersRepo groupMembersRepo;
+    
+    @Autowired
+    private ExpenseParticipantRepo expenseParticipantRepo;
+
+    @Autowired
+    private ExpenseRepo expenseRepo;
+
+    public boolean canDeleteMember(GroupMembers member){
+
+        boolean hasShares =
+                expenseParticipantRepo.existsByMember(member);
+
+        boolean hasPaidExpenses =
+                expenseRepo.existsByGroupAndPaidBy(
+                        member.getGroup(),
+                        member.getEmail()
+                );
+
+        return !(hasShares || hasPaidExpenses);
+
+    }
 
 
     public void addMember(GroupMembers member){
@@ -68,6 +91,23 @@ public class GroupMembersService {
         }
 
         return null;
+
+    }
+    
+
+    public void updateMember(GroupMembers member){
+
+        groupMembersRepo.save(member);
+
+    }
+    public void deleteMember(int id) {
+
+        groupMembersRepo.deleteById(id);
+
+    }
+    public List<GroupMembers> searchMembers(Groups group, String keyword){
+
+        return groupMembersRepo.searchMembers(group, keyword);
 
     }
     

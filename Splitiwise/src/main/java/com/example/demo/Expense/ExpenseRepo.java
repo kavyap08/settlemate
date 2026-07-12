@@ -36,4 +36,9 @@ public interface ExpenseRepo extends JpaRepository<Expense, Integer> {
 
     @Query("SELECT COALESCE(SUM(e.amount),0) FROM Expense e WHERE e.group.id=:groupId AND e.category='Others'")
     double getOthersTotal(@Param("groupId") int groupId);
+    
+    
+    boolean existsByGroupAndPaidBy(Groups group, String paidBy);
+
+
 }

@@ -11,6 +11,16 @@ public class Groups {
     private int id;
 
     private String groupName;
+    
+    private boolean active;
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 
 	public int getId() {
 		return id;

@@ -15,133 +15,134 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class UserController {
 
-    @Autowired
-    private UserService userservice;
-    
-    @Autowired
-    private GroupsService groupsService;
+	@Autowired
+	private UserService userservice;
 
+	@Autowired
+	private GroupsService groupsService;
 
-    // LOGIN PAGE
-    @GetMapping("/login")
-    public String login(Model model,
-                        HttpServletRequest request) {
+	// LOGIN PAGE
+	@GetMapping("/login")
+	public String login(Model model, HttpServletRequest request) {
 
-        User user =
-          (User) request.getSession().getAttribute("sessionUser");
+		User user = (User) request.getSession().getAttribute("sessionUser");
 
-        // already logged in
-        if(user != null){
-            return "redirect:/dashboard";
-        }
+		// already logged in
+		if (user != null) {
+			return "redirect:/dashboard";
+		}
 
-        model.addAttribute("mode","login");
+		model.addAttribute("mode", "login");
 
-        return "auth";
-    }
+		return "auth";
+	}
 
+	// SIGNUP PAGE
+	@GetMapping("/register")
+	public String register(Model model, HttpServletRequest request) {
 
-    // SIGNUP PAGE
-    @GetMapping("/register")
-    public String register(Model model,
-                           HttpServletRequest request) {
+		User user = (User) request.getSession().getAttribute("sessionUser");
 
-        User user =
-          (User) request.getSession().getAttribute("sessionUser");
+		if (user != null) {
+			return "redirect:/dashboard";
+		}
 
-        if(user != null){
-            return "redirect:/dashboard";
-        }
+		model.addAttribute("mode", "register");
 
-        model.addAttribute("mode","register");
+		return "auth";
+	}
 
-        return "auth";
-    }
+	// LOGIN USER
+	@PostMapping("/login-user")
+	public String loginUser(Model model, HttpServletRequest request) {
 
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		User user = userservice.findByEmail(email);
 
-    // LOGIN USER
-    @PostMapping("/login-user")
-    public String loginUser(Model model,
-                            HttpServletRequest request) {
+		if (user != null && user.getPassword().equals(password)) {
 
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+			HttpSession session = request.getSession();
 
-        List<User> users = userservice.findByEmail(email);
+			session.setAttribute("sessionUser", user);
 
-        if(users.size() > 0){
+			return "redirect:/dashboard";
 
-            User user = users.get(0);
+		}
 
-            if(user.getPassword().equals(password)){
+		model.addAttribute("msg", "Invalid Email or Password");
+		model.addAttribute("mode", "login");
 
-                HttpSession session = request.getSession();
+		return "auth";
+	}
 
-                session.setAttribute("sessionUser", user);
+	// REGISTER USER
+	@PostMapping("/register-user")
+	public String registerUser(Model model, HttpServletRequest request) {
 
-                return "redirect:/dashboard";
-            }
-        }
+		String name = request.getParameter("name");
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
 
-        model.addAttribute("msg","Invalid Email or Password");
-        model.addAttribute("mode","login");
+		User user = new User();
 
-        return "auth";
-    }
+		user.setName(name);
+		user.setEmail(email);
+		user.setPassword(password);
 
+		if (userservice.existsByEmail(email)) {
 
-    // REGISTER USER
-    @PostMapping("/register-user")
-    public String registerUser(Model model,
-                               HttpServletRequest request) {
+			model.addAttribute("msg", "Email already registered");
 
-        String name = request.getParameter("name");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+			model.addAttribute("mode", "register");
 
-        User user = new User();
+			return "auth";
 
-        user.setName(name);
-        user.setEmail(email);
-        user.setPassword(password);
+		}
 
-        userservice.saveUser(user);
+		userservice.saveUser(user);
 
-        model.addAttribute("msg","Account Created Successfully");
-        model.addAttribute("mode","login");
+		model.addAttribute("msg", "Account Created Successfully");
+		model.addAttribute("mode", "login");
 
-        return "auth";
-    }
+		return "auth";
+	}
 
+	// DASHBOARD
+	@GetMapping("/dashboard")
+	public String dashboard(HttpServletRequest request, Model model) {
 
-    // DASHBOARD
-    @GetMapping("/dashboard")
-    public String dashboard(HttpServletRequest request, Model model) {
+		User user = (User) request.getSession().getAttribute("sessionUser");
 
-        User user = (User) request.getSession().getAttribute("sessionUser");
+		if (user == null) {
 
-        if(user == null) {
+			return "redirect:/login";
 
-            return "redirect:/login";
+		}
+		String error = request.getParameter("error");
 
-        }
+		if(error != null){
 
-        model.addAttribute("user", user);
+		    model.addAttribute("error", error);
 
-        model.addAttribute("groups", groupsService.findAllGroups());
+		}
 
-        return "dashboard";
-    }
+		model.addAttribute("user", user);
 
-    // LOGOUT
-    @PostMapping("/logout")
-    public String logout(HttpServletRequest request) {
+		model.addAttribute("groups", groupsService.getGroupsForUser(user));
 
-        HttpSession session = request.getSession();
+		return "dashboard";
+	}
 
-        session.invalidate();
+	// LOGOUT
+	@PostMapping("/logout")
+	public String logout(HttpServletRequest request) {
 
-        return "redirect:/login";
-    }
-    
+		HttpSession session = request.getSession();
+
+		session.invalidate();
+
+		return "redirect:/login";
+	}
+
 }

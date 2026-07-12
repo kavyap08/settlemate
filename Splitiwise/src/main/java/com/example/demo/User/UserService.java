@@ -11,39 +11,36 @@ public class UserService {
     @Autowired
     private UserRepo userRepo;
 
-
-    
     public User saveUser(User user) {
+
         return userRepo.save(user);
+
     }
 
-
- 
     public boolean loginUser(String email, String password) {
 
-        List<User> users = userRepo.findByEmail(email);
+        User user = userRepo.findByEmail(email);
 
-        if(users.size() > 0) {
+        if(user != null && user.getPassword().equals(password)){
 
-            User user = users.get(0);
+            return true;
 
-            if(user.getPassword().equals(password)) {
-                return true;
-            }
         }
 
         return false;
+
     }
 
+    public boolean existsByEmail(String email){
 
-  
-    public boolean existsByEmail(String email) {
+        return userRepo.findByEmail(email) != null;
 
-        List<User> users = userRepo.findByEmail(email);
-
-        return users.size() > 0;
     }
-    public List<User> findByEmail(String email){
+
+    public User findByEmail(String email){
+
         return userRepo.findByEmail(email);
+
     }
+
 }

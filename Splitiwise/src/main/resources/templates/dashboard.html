@@ -36,56 +36,61 @@
         <!-- HEADER -->
 
         <div class="dashboard-header">
+			<div class="error-message"
+			     th:if="${error}">
 
-            <div class="header-left">
+			    User with email
+			    <strong th:text="${error}"></strong>
+			    is not registered.
 
-                <p class="workspace-text">
-                    Travel split workspace
-                </p>
+			</div>
 
-				<h1 class="group-title"
-				    th:text="${group != null ? group.groupName : 'Select a Group'}">
+			<div class="header-left">
 
-				    Goa Weekend
+			    <p class="workspace-text">
+			        Travel split workspace
+			    </p>
 
-				</h1>
+			    <h1 class="group-title"
+			        th:if="${groupSelected != null}"
+			        th:text="${groupSelected.groupName}">
+			    </h1>
 
-            </div>
+			    <h1 class="group-title"
+			        th:if="${groupSelected == null}"
+			        th:text="'Welcome, ' + ${user.name}">
+			    </h1>
 
+			</div>
+			<div class="header-right">
 
-            <div class="header-right">
+			   
 
-                <form th:action="@{/logout}" method="post">
+			    <form th:action="@{/logout}" method="post">
 
-                    <button type="submit" class="header-btn">
+			        <button type="submit" class="header-btn">
 
-                        <span class="material-icons-round btn-icon">
-                            logout
-                        </span>
+			            <span class="material-icons-round btn-icon">
+			                logout
+			            </span>
 
-                        Logout
+			            Logout
 
-                    </button>
+			        </button>
 
-                </form>
+			    </form>
 
+			    <button class="header-btn">
 
-                <a th:href="@{/invite}"
-                   style="text-decoration:none;">
+			        <span class="material-icons-round btn-icon">
+			            person_add
+			        </span>
 
-                    <button class="header-btn">
+			        Invite
 
-                        <span class="material-icons-round btn-icon">
-                            person_add
-                        </span>
+			    </button>
 
-                        Invite
-
-                    </button>
-
-                </a>
-
-            </div>
+			</div>
 
         </div>
 
@@ -332,12 +337,36 @@
 				                    </div>
 
 				                </div>
+								
+								
 
             </div>
 
         </div>
+		<!-- Archive Group -->
+
+		<div class="archive-section" th:if="${groupSelected != null}">
+											
+			<form th:action="@{/delete-group}" method="post"onsubmit="return confirm('Are you sure you want to archive this group?');">
+											
+				<input type="hidden" name="groupId" th:value="${groupSelected.id}">
+											
+						<button type="submit" class="archive-btn">
+											
+									<span class="material-icons-round">
+															archive
+														</span>
+											
+											Delete Group
+											
+											</button>
+											
+									</form>
+											
+			</div>
 
     </div>
+	
 
 </div>
 

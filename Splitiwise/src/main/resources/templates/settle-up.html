@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Settle Up</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/settle-up.css}">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
+          rel="stylesheet">
+
+</head>
+
+	<body>
+
+	<div class="main-layout">
+
+	    <!-- Sidebar -->
+
+	    <div th:replace="~{fragments/sidebar :: sidebar}">
+	    </div>
+
+	    <!-- Main Content -->
+
+	    <div class="content">
+
+	        <div class="dashboard-header">
+				<div class="page-header">
+
+				    <h1>
+
+				        Settle Up
+
+				    </h1>
+
+				    <p>
+
+				        Clear outstanding balances between members.
+
+				    </p>
+
+				</div>
+	            <div class="header-left">
+
+	                <p class="workspace-text">
+
+	                    Travel Split Workspace
+
+	                </p>
+
+	                <h1 class="group-title"
+	                    th:text="${groupSelected.groupName}">
+
+	                </h1>
+
+	            </div>
+
+	            <div class="header-right">
+
+	                <form th:action="@{/logout}"
+	                      method="post">
+
+	                    <button class="header-btn">
+
+	                        <span class="material-icons-round btn-icon">
+
+	                            logout
+
+	                        </span>
+
+	                        Logout
+
+	                    </button>
+
+	                </form>
+
+	                <button class="header-btn">
+
+	                    <span class="material-icons-round btn-icon">
+
+	                        person_add
+
+	                    </span>
+
+	                    Invite
+
+	                </button>
+
+	            </div>
+
+	        </div>
+
+			<!-- ============================= -->
+			<!-- MONEY YOU OWE -->
+			<!-- ============================= -->
+
+			<div class="section-title">
+
+			    Money You Owe
+
+			</div>
+
+			<div class="empty-state"
+			     th:if="${#lists.isEmpty(pendingPayments)}">
+
+			    <span class="material-icons-round">
+
+			        check_circle
+
+			    </span>
+
+			    <h2>
+
+			        You don't owe anyone 🎉
+
+			    </h2>
+
+			</div>
+
+			<div class="settlement-container"
+			     th:if="${!#lists.isEmpty(pendingPayments)}">
+
+			    <div class="settlement-card"
+			         th:each="settlement : ${pendingPayments}">
+
+			        <div class="member-details">
+
+			            <div class="avatar">
+
+			                <span class="material-icons-round">
+
+			                    person
+
+			                </span>
+
+			            </div>
+
+			            <div>
+
+			                <h3>
+
+			                    You owe
+
+			                    <span th:text="${settlement.receiver.name}"></span>
+
+			                </h3>
+
+			                <p>
+
+			                    Please settle this payment.
+
+			                </p>
+
+			            </div>
+
+			        </div>
+
+			        <div class="payment-section">
+
+			            <div class="amount">
+
+			                ₹<span
+			                    th:text="${#numbers.formatDecimal(settlement.amount,1,2)}">
+			                </span>
+
+			            </div>
+
+			            <form th:action="@{/confirm-settlement}"
+			                  method="post">
+
+			                <input type="hidden"
+			                       name="groupId"
+			                       th:value="${groupSelected.id}">
+
+			                <input type="hidden"
+			                       name="payerId"
+			                       th:value="${settlement.payer.id}">
+
+			                <input type="hidden"
+			                       name="receiverId"
+			                       th:value="${settlement.receiver.id}">
+
+			                <input type="hidden"
+			                       name="amount"
+			                       th:value="${settlement.amount}">
+
+			                <button class="settle-btn">
+
+			                    <span class="material-icons-round">
+
+			                        payments
+
+			                    </span>
+
+			                    Settle
+
+			                </button>
+
+			            </form>
+
+			        </div>
+
+			    </div>
+
+			</div>
+
+
+			<!-- ============================= -->
+			<!-- MONEY OWED TO YOU -->
+			<!-- ============================= -->
+
+			<div class="section-title">
+
+			    Money Owed To You
+
+			</div>
+
+			<div class="empty-state"
+			     th:if="${#lists.isEmpty(incomingPayments)}">
+
+			    <span class="material-icons-round">
+
+			        savings
+
+			    </span>
+
+			    <h2>
+
+			        Nobody owes you money.
+
+			    </h2>
+
+			</div>
+
+			<div class="settlement-container"
+			     th:if="${!#lists.isEmpty(incomingPayments)}">
+
+			    <div class="settlement-card"
+			         th:each="settlement : ${incomingPayments}">
+
+			        <div class="member-details">
+
+			            <div class="avatar">
+
+			                <span class="material-icons-round">
+
+			                    person
+
+			                </span>
+
+			            </div>
+
+			            <div>
+
+			                <h3>
+
+			                    <span th:text="${settlement.payer.name}"></span>
+
+			                    owes you
+
+			                </h3>
+
+			                <p>
+
+			                    Waiting for payment
+
+			                </p>
+
+			            </div>
+
+			        </div>
+
+			        <div class="payment-section">
+
+			            <div class="amount">
+
+			                ₹<span
+			                    th:text="${#numbers.formatDecimal(settlement.amount,1,2)}">
+			                </span>
+
+			            </div>
+
+			        </div>
+
+			    </div>
+
+			</div>
+
+        <!-- Settlement History -->
+
+		<div class="history-title"
+		     th:if="${!#lists.isEmpty(history)}">
+
+		    Settlement History
+
+		</div>
+
+        <div class="history-container">
+
+            <div class="history-card"
+                 th:if="${!#lists.isEmpty(history)}"
+                 th:each="item : ${history}">
+
+                <div class="history-left">
+
+                    <span class="material-icons-round history-icon">
+
+                        check_circle
+
+                    </span>
+
+                    <div>
+
+                        <h4>
+
+                            <span th:text="${item.payer.name}"></span>
+
+                            paid
+
+                            <span th:text="${item.receiver.name}"></span>
+
+                        </h4>
+
+                        <p th:text="${#temporals.format(item.settledOn,'dd MMM yyyy HH:mm')}"></p>
+
+                    </div>
+
+                </div>
+
+                <div class="history-right">
+
+                    ₹<span th:text="${#numbers.formatDecimal(item.amount,1,2)}"></span>
+
+                </div>
+
+            </div>
+
+            <div class="empty-history"
+                 th:if="${#lists.isEmpty(history)}">
+
+                No settlements yet.
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
